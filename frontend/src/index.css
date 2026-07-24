@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Riveruta';
+  src: url('https://db.onlinewebfonts.com/c/bff17e7d6468af1f0f0d1c86b6ad183e?family=Riveruta+Regular') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Riveruta';
+  src: url('https://db.onlinewebfonts.com/c/f30add382783adb67efa1b2719141435?family=Riveruta+Bold') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: "Riveruta", "Poppins", system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background-color: #fdfeff;
+    overflow-x: hidden;
+    font-weight: 400;
+  }
+}
+
+@layer utilities {
+  .font-riveruta-regular {
+    font-family: "Riveruta", sans-serif;
+    font-weight: 400;
+  }
+  
+  .font-riveruta-bold {
+    font-family: "Riveruta", sans-serif;
+    font-weight: 700;
+  }
+}
