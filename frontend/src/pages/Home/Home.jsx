@@ -1,13 +1,32 @@
-import React from 'react'
+import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
+import NoteCard from "../../components/Cards/NoteCard";
+import { MdAdd } from "react-icons/md";
 
-const Navbar = () => {
+const Home = () => {
   return (
-    <div  className="bg-white flex items-center justify-between px-6 py-2 drop-shadow">
-      <h2 className="text-xl font-medium text-black py-2">Notes</h2>
-      <ProfileInfo/>
-    </div>
+    <>
+      <Navbar />
+
+      <div className="container mx-auto">
+        <div className="grid grid-cols-3 gap-4 mt-8">
+          <NoteCard
+            title="University Starting on 31st August"
+            date="30th July 2026"
+            content="University Starting on 31st August. Plan Accordingly!"
+            tags="#University"
+            isPinned={true}
+            onEdit={() => {}}
+            onDelete={() => {}}
+            onPinNote={() => {}}
+          />
+        </div>
+      </div>
+      <button className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {}}>
+        <MdAdd className="text-[32px] text-white"/>
+      </button>
+    </>
   );
 };
 
-export default Home
+export default Home;
