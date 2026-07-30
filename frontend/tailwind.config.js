@@ -6,10 +6,10 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        'riveruta': ['Riveruta', 'sans-serif'],
-        'poppins': ['Poppins', 'sans-serif'],
-      }
+      colors:{
+        primary: "#2B85FF",
+        secondary: "#EF863E",
+      },
     },
   },
   plugins: [],
