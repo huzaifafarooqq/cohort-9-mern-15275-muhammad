@@ -24,10 +24,11 @@ const NoteCard = ({
           <span className="text-sm text-slate-500">{date}</span>
         </div>
 
-        <MdOutlinePushPin
-          className={`icon-btn ${isPinned ? "text-primary" : "text-slate-300"}`}
-          onClick={onPinNote}
-        />
+        <button type="button" aria-label="Pin note" onClick={onPinNote}>
+          <MdOutlinePushPin
+            className={`icon-btn ${isPinned ? "text-primary" : "text-slate-300"}`}
+          />
+        </button>
       </div>
 
       <p className="text-[15px] leading-7 text-gray-600 mt-5">
@@ -39,15 +40,13 @@ const NoteCard = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <MdCreate
-            className="text-2xl text-gray-400 cursor-pointer hover:text-[#4CAF50] transition"
-            onClick={onEdit}
-          />
+          <button type="button" aria-label="Edit note" onClick={onEdit}>
+            <MdCreate className="text-2xl text-gray-400 cursor-pointer hover:text-[#4CAF50] transition" />
+          </button>
 
-          <MdDelete
-            className="text-2xl text-gray-400 cursor-pointer hover:text-[#EF4444] transition"
-            onClick={onDelete}
-          />
+          <button type="button" aria-label="Delete note" onClick={onDelete}>
+            <MdDelete className="text-2xl text-gray-400 cursor-pointer hover:text-[#EF4444] transition" />
+          </button>
         </div>
       </div>
     </div>

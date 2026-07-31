@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 
@@ -9,6 +11,15 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
 
   const [error, setError] = useState(null);
 
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "",
+    immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
+  });
+
   const addNewNote = async () => {};
 
   const editNote = async () => {};
@@ -18,7 +29,7 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
       setError("Please enter the title");
       return;
     }
-    if (!content) {
+    if (!editor || editor.isEmpty) {
       setError("Please enter the content");
       return;
     }
@@ -33,6 +44,8 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
   return (
     <div className="relative">
       <button
+        type="button"
+        aria-label="Close note editor"
         className="w-10 h-10 rounded-full flex items-center justify-center absolute top-3 right-3 bg-gray-100 hover:bg-primary-light transition"
         onClick={onClose}
       >
@@ -44,7 +57,7 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
         <input
           type="text"
           className="text-4xl font-semibold text-gray-800 outline-none placeholder:text-gray-400"
-          placeholder="Go To Gym At 5"
+          placeholder="Enter note title"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
@@ -52,14 +65,63 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
 
       <div className="flex flex-col gap-2 mt-4">
         <label className="input-label">CONTENT</label>
-        <textarea
-          type="text"
-          className="w-full text-[15px] text-gray-700 outline-none bg-background border border-gray-200 rounded-2xl p-5 resize-none focus:border-primary transition"
-          placeholder="Content"
-          rows={10}
-          value={content}
-          onChange={({ target }) => setContent(target.value)}
-        />
+
+        <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white focus-within:border-primary transition-all">
+          <div className="flex flex-wrap items-center gap-2 p-3 border-b border-gray-200 bg-gray-50">
+            <button
+              type="button"
+              onClick={() => editor?.chain().focus().toggleBold().run()}
+              className={`px-3 py-1 rounded-lg text-sm font-semibold transition ${
+                editor?.isActive("bold")
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              <strong>B</strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => editor?.chain().focus().toggleItalic().run()}
+              className={`px-3 py-1 rounded-lg text-sm transition ${
+                editor?.isActive("italic")
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              <em>I</em>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => editor?.chain().focus().toggleBulletList().run()}
+              className={`px-3 py-1 rounded-lg text-sm transition ${
+                editor?.isActive("bulletList")
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              • List
+            </button>
+
+            <button
+              type="button"
+              onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+              className={`px-3 py-1 rounded-lg text-sm transition ${
+                editor?.isActive("orderedList")
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              1. List
+            </button>
+          </div>
+
+          <EditorContent
+            editor={editor}
+            className="min-h-[220px] p-5 text-[15px] text-gray-700 focus:outline-none"
+          />
+        </div>
       </div>
 
       <div className="mt-3">

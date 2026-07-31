@@ -12,12 +12,20 @@ const Home = () => {
     data: null,
   });
 
+  const handleCloseModal = () => {
+    setOpenAddEditModal({
+      isShown: false,
+      type: "add",
+      data: null,
+    });
+  };
+
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto">
-          <div className="grid grid-cols-3 gap-10 mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
             <NoteCard
               title="University Starting on 31st August"
               date="30th July 2026"
@@ -88,6 +96,8 @@ const Home = () => {
         </div>
       </div>
       <button
+        type="button"
+        aria-label="Add note"
         className="fixed bottom-8 right-8 w-20 h-20 flex items-center justify-center rounded-full bg-primary hover:bg-primary-dark shadow-2xl hover:scale-110 transition-all duration-300"
         onClick={() => {
           setOpenAddEditModal({ isShown: true, type: "add", data: null });
@@ -97,21 +107,21 @@ const Home = () => {
       </button>
       <Modal
         isOpen={openAddEditModal.isShown}
-        onRequestClose={() => {}}
+        onRequestClose={handleCloseModal}
         style={{
           overlay: {
             backgroundColor: "rgba(0,0,0,0.2)",
           },
         }}
-        contentLabel=""
-        className="w-[42%] max-h-[85vh] bg-surface rounded-3xl mx-auto mt-10 p-8 shadow-2xl overflow-y-auto"
+        contentLabel={
+          openAddEditModal.type === "edit" ? "Edit note" : "Add note"
+        }
+        className="w-[95%] sm:w-[85%] md:w-[70%] lg:w-[42%] max-h-[85vh] bg-surface rounded-3xl mx-auto mt-10 p-8 shadow-2xl overflow-y-auto"
       >
         <AddEditNotes
           type={openAddEditModal.type}
           noteData={openAddEditModal.data}
-          onClose={() => {
-            setOpenAddEditModal({ isShown: false, type: "add", data: null });
-          }}
+          onClose={handleCloseModal}
         />
       </Modal>
     </>
