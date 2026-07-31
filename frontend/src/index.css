@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,11 @@
 
 @layer base {
   html {
-    font-family: Poppins, system-ui, -apple-system, sans-serif;
+    font-family:
+      Poppins,
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   body {
@@ -15,14 +19,20 @@
   }
 }
 
-@layer components{
-  .input-box{
-    @apply w-full text-sm bg-transparent border-[1.5px] px-5 py-3 rounded mb-4 outline-none;
+@layer components {
+  .input-box {
+    @apply w-full rounded-xl border border-border bg-gray-50 px-5 py-3 text-base outline-none mb-5 transition-all duration-200 focus:border-primary focus:bg-surface;
   }
-  .btn-primary{
-    @apply w-full text-sm bg-primary text-white p-2 rounded my-1 hover:bg-blue-600;
+
+  .btn-primary {
+    @apply w-full py-3 rounded-xl bg-primary text-white font-semibold transition-all duration-300 hover:bg-primary-dark;
   }
-  .icon-btn{
+
+  .icon-btn {
     @apply text-xl text-slate-300 cursor-pointer hover:text-primary;
+  }
+
+  .input-label {
+    @apply text-xs font-semibold tracking-wider text-gray-500;
   }
 }
