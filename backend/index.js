@@ -8,7 +8,10 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 
 const User = require("./models/user.model");
+<<<<<<< HEAD
 const Note = require("./models/note.model");
+=======
+>>>>>>> 5fe208f (feat: implement user authentication APIs)
 
 const express = require("express");
 const cors = require("cors");
@@ -113,6 +116,7 @@ app.post("/login", async (req, res) => {
     });
   }
 });
+<<<<<<< HEAD
 
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
@@ -299,6 +303,8 @@ app.get("/get-user", authenticateToken, async (req, res) => {
     message: "",
   });
 });
+=======
+>>>>>>> 5fe208f (feat: implement user authentication APIs)
 
 app.listen(8000);
 
