@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import NoteCard from "../../components/Cards/NoteCard";
 import { MdAdd } from "react-icons/md";
 import AddEditNotes from "./AddEditNotes";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -11,6 +13,29 @@ const Home = () => {
     type: "add",
     data: null,
   });
+
+  const [userInfo, setUserInfo] = useState(null);
+
+  const navigate = useNavigate();
+
+  const getUserInfo = async () => {
+    try {
+      const response = await axiosInstance.get("/get-user");
+      if (response.data && response.data.user) {
+        setUserInfo(response.data.user);
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        localStorage.clear();
+        navigate("/login");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+    return () => {};
+  }, []);
 
   const handleCloseModal = () => {
     setOpenAddEditModal({
@@ -22,7 +47,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar userInfo={userInfo}/>
       <div className="min-h-screen bg-background">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
