@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 import { MdOutlinePushPin } from "react-icons/md";
 import { MdCreate, MdDelete } from "react-icons/md";
@@ -21,7 +22,9 @@ const NoteCard = ({
       <div className="flex items-center justify-between">
         <div>
           <h6 className="text-lg font-semibold text-gray-800">{title}</h6>
-          <span className="text-sm text-slate-500">{date}</span>
+          <span className="text-sm text-slate-500">
+            {moment(date).format("Do MMM YYYY")}
+          </span>
         </div>
 
         <button type="button" aria-label="Pin note" onClick={onPinNote}>
@@ -31,12 +34,13 @@ const NoteCard = ({
         </button>
       </div>
 
-      <p className="text-[15px] leading-7 text-gray-600 mt-5">
-        {content?.slice(0, 60)}
-      </p>
+      <div
+        className="text-[15px] leading-7 text-gray-600 mt-5"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
       <div className="flex items-center justify-between mt-2">
         <div className="px-3 py-1 rounded-full bg-primary-light text-primary-text text-sm font-medium">
-          {tags}
+          {tags.map((item) => `#${item} `)}
         </div>
 
         <div className="flex items-center gap-3">
