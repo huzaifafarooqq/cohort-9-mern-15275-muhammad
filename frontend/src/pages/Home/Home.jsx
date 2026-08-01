@@ -14,9 +14,14 @@ const Home = () => {
     data: null,
   });
 
+  const [allNotes, setAllNotes] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
 
   const navigate = useNavigate();
+
+  const handleEdit = (noteDetails) => {
+    setOpenAddEditModal({isShown: true, data: noteDetails, type: "edit"});
+  };
 
   const getUserInfo = async () => {
     try {
@@ -32,7 +37,20 @@ const Home = () => {
     }
   };
 
+  const getAllNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-notes");
+
+      if (response.data && response.data.notes) {
+        setAllNotes(response.data.notes);
+      }
+    } catch (error) {
+      console.log("An unexpected error occurred. Please try again.");
+    }
+  };
+
   useEffect(() => {
+    getAllNotes();
     getUserInfo();
     return () => {};
   }, []);
@@ -47,76 +65,24 @@ const Home = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo}/>
+      <Navbar userInfo={userInfo} />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-primary"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-success"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-info"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-purple"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-peach"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-pink"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
+            {allNotes.map((item, index) => (
+              <NoteCard
+                key={item._id}
+                title={item.title}
+                date={item.createdOn}
+                content={item.content}
+                tags={item.tags}
+                isPinned={item.isPinned}
+                bgClass="border-l-success"
+                onEdit={() => handleEdit(item)}
+                onDelete={() => {}}
+                onPinNote={() => {}}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -146,7 +112,10 @@ const Home = () => {
         <AddEditNotes
           type={openAddEditModal.type}
           noteData={openAddEditModal.data}
-          onClose={handleCloseModal}
+          onClose={() => {
+            setOpenAddEditModal({ isShown: false, type: "add", data: null });
+          }}
+          getAllNotes={getAllNotes}
         />
       </Modal>
     </>
