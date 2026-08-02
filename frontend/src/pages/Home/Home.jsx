@@ -72,7 +72,7 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-      console.log("An unexpected error occurred:", error);
+      showToastMessage("Failed to load notes", "delete");
     }
   };
 
@@ -86,13 +86,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        console.log("An unexpected error occurred:", error);
-      }
+      showToastMessage("Failed to delete note", "delete");
     }
   };
 
@@ -107,7 +101,7 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-      console.log(error);
+      showToastMessage("Search failed", "delete");
     }
   };
 
@@ -126,7 +120,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      console.log(error);
+      showToastMessage("Failed to update note", "delete");
     }
   };
 
