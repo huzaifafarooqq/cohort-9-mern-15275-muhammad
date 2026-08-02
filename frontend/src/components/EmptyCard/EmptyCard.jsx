@@ -6,7 +6,7 @@ const EmptyCard = ({ imgSrc, message }) => {
       <img
         src={imgSrc}
         alt="No notes"
-        className="w-80 h-80 object-contain"
+        className="w-[420px] h-[420px] object-contain"
       />
 
       <p className="max-w-2xl text-lg text-gray-600 text-center leading-8 mt-6">

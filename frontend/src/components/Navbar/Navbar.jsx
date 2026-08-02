@@ -3,7 +3,7 @@ import ProfileInfo from "../Cards/ProfileInfo";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 
-const Navbar = ({ userInfo }) => {
+const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
@@ -13,20 +13,33 @@ const Navbar = ({ userInfo }) => {
     navigate("/login");
   };
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    if (searchQuery) {
+      onSearchNote(searchQuery);
+    }
+  };
 
   const onClearSearch = () => {
     setSearchQuery("");
+    handleClearSearch();
   };
   return (
     <div className="bg-surface flex items-center justify-between px-8 py-5 border-b border-gray-200 shadow-sm">
-      <h2 className="text-3xl font-bold text-secondary tracking-tight">
+      <h2
+        className="text-3xl font-bold text-secondary tracking-tight cursor-pointer"
+        onClick={() => navigate("/dashboard")}
+      >
         Notes
       </h2>
       <SearchBar
         value={searchQuery}
         onChange={({ target }) => {
           setSearchQuery(target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
         }}
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}
