@@ -8,6 +8,7 @@ const noteSchema = new Schema({
   tags: { type: [String], default: [] },
   isPinned: { type: Boolean, default: false },
   userId: { type: String, required: true },
+  noteColor: { type: String },
   createdOn: { type: Date, default: new Date().getTime() },
 });
 
