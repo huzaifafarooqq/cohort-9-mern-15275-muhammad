@@ -27,7 +27,6 @@ const Login = () => {
 
     try {
       const response = await axiosInstance.post("/login", {
-<<<<<<< HEAD
         email,
         password,
       });
@@ -40,19 +39,6 @@ const Login = () => {
       setError("Login was unsuccessful. Please try again.");
     } catch (error) {
       if (error.response?.data?.message) {
-=======
-        email: email,
-        password: password,
-      });
-
-      if (response.data && response.data.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      if (
-        error.response && error.response.data && error.response.data.message) {
->>>>>>> 3fb2f33 (feat: integrate authentication APIs with frontend)
         setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");

@@ -9,11 +9,7 @@ const Navbar = ({ userInfo }) => {
   const navigate = useNavigate();
 
   const onLogout = () => {
-<<<<<<< HEAD
     localStorage.removeItem("token");
-=======
-    localStorage.clear();
->>>>>>> 3fb2f33 (feat: integrate authentication APIs with frontend)
     navigate("/login");
   };
 
