@@ -1,17 +1,23 @@
 require("dotenv").config();
 
+const logger = require("./logger");
+
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    logger.info("Connected to MongoDB");
+  })
+  .catch((error) => {
+    logger.error(error, "MongoDB connection failed");
+  });
 
 const User = require("./models/user.model");
-<<<<<<< HEAD
 const Note = require("./models/note.model");
-=======
->>>>>>> 5fe208f (feat: implement user authentication APIs)
 
 const express = require("express");
 const cors = require("cors");
@@ -31,6 +37,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
+  logger.info("Home route accessed");
   res.json({ data: "hello" });
 });
 
@@ -74,6 +81,7 @@ app.post("/create-account", async (req, res) => {
     expiresIn: "36000m",
   });
 
+  logger.info(`New user registered: ${email}`);
   return res.json({
     error: false,
     user,
@@ -105,6 +113,7 @@ app.post("/login", async (req, res) => {
       expiresIn: "36000m",
     });
 
+    logger.info(`User logged in: ${email}`);
     return res.json({
       error: false,
       message: "Login Successful",
@@ -118,7 +127,6 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-<<<<<<< HEAD
 
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
@@ -151,12 +159,15 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 
     await note.save();
 
+    logger.info(`Note created by user ${user._id}`);
     return res.json({
       error: false,
       note,
       message: "Note added successfully",
     });
   } catch (error) {
+    logger.error(error);
+
     return res.status(500).json({
       error: true,
       message: "Internal Server Error",
@@ -185,20 +196,11 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
     if (title) note.title = title;
     if (content) note.content = content;
     if (tags) note.tags = tags;
-
-    if (isPinned !== undefined) {
-      if (typeof isPinned !== "boolean") {
-        return res.status(400).json({
-          error: true,
-          message: "isPinned must be a boolean",
-        });
-      }
-
-      note.isPinned = isPinned;
-    }
+    if (isPinned) note.isPinned = isPinned;
 
     await note.save();
 
+    logger.info(`Note updated: ${noteId}`);
     return res.json({
       error: false,
       note,
@@ -244,6 +246,7 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 
     await Note.deleteOne({ _id: noteId, userId: user._id });
 
+    logger.info(`Note deleted: ${noteId}`);
     return res.json({
       error: false,
       message: "Note deleted successfully",
@@ -261,13 +264,6 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
   const { isPinned } = req.body;
   const { user } = req.user;
 
-  if (typeof isPinned !== "boolean") {
-    return res.status(400).json({
-      error: true,
-      message: "isPinned must be a boolean",
-    });
-  }
-
   try {
     const note = await Note.findOne({ _id: noteId, userId: user._id });
 
@@ -279,6 +275,7 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
 
     await note.save();
 
+    logger.info(`Note ${noteId} ${isPinned ? "pinned" : "unpinned"}`);
     return res.json({
       error: false,
       note,
@@ -291,7 +288,6 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
     });
   }
 });
-
 
 app.get("/get-user", authenticateToken, async (req, res) => {
   const { user } = req.user;
@@ -312,9 +308,44 @@ app.get("/get-user", authenticateToken, async (req, res) => {
     message: "",
   });
 });
-=======
->>>>>>> 5fe208f (feat: implement user authentication APIs)
 
-app.listen(8000);
+app.get("/search-notes/", authenticateToken, async (req, res) => {
+  const { user } = req.user;
+  const { query } = req.query;
+
+  if (!query) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Search query is required" });
+  }
+
+  try {
+    const matchingNotes = await Note.find({
+      userId: user._id,
+      $or: [
+        { title: { $regex: new RegExp(query, "i") } },
+        { content: { $regex: new RegExp(query, "i") } },
+      ],
+    });
+
+    logger.info(`Search performed: "${query}"`);
+    return res.json({
+      error: false,
+      notes: matchingNotes,
+      message: "Notes matching the search query retrieved successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
+  }
+});
+
+const PORT = 8000;
+
+app.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});
 
 module.exports = app;
