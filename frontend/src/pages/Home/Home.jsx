@@ -76,12 +76,15 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
+<<<<<<< HEAD
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
         return;
       }
 
+=======
+>>>>>>> 5480397 (Add global exception handling middleware)
       showToastMessage("Failed to load notes", "delete");
     }
   };
@@ -96,13 +99,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        console.log("An unexpected error occurred:", error);
-      }
+      showToastMessage("Failed to delete note", "delete");
     }
   };
 
@@ -117,7 +114,7 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-      console.log(error);
+      showToastMessage("Search failed", "delete");
     }
   };
 
@@ -136,7 +133,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      console.log(error);
+      showToastMessage("Failed to update note", "delete");
     }
   };
 
