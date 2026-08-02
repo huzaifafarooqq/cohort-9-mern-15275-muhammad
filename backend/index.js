@@ -20,6 +20,8 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utilities");
 
+const NOTE_COLORS = ["success", "info", "purple", "peach", "pink", "primary"];
+
 app.use(express.json());
 
 app.use(
@@ -133,10 +135,17 @@ app.post("/add-note", authenticateToken, async (req, res) => {
   }
 
   try {
+    const noteCount = await Note.countDocuments({
+      userId: user._id,
+    });
+
+    const noteColor = NOTE_COLORS[noteCount % NOTE_COLORS.length];
+
     const note = new Note({
       title,
       content,
       tags: tags || [],
+      noteColor,
       userId: user._id,
     });
 
