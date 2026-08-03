@@ -1,45 +1,99 @@
-@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: Riveruta;
-  src: url('https://db.onlinewebfonts.com/t/bff17e7d6468af1f0f0d1c86b6ad183e.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Riveruta;
-  src: url('https://db.onlinewebfonts.com/t/f30add382783adb67efa1b2719141435.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
   html {
-    font-family: Riveruta, Poppins, system-ui, -apple-system, sans-serif;
+    font-family:
+      Poppins,
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   body {
     background-color: #fdfeff;
     overflow-x: hidden;
-    font-weight: 400;
   }
 }
 
-@layer utilities {
-  .font-riveruta-regular {
-    font-family: Riveruta, sans-serif;
-    font-weight: 400;
+@layer components {
+  .input-box {
+    @apply w-full rounded-xl border border-border bg-gray-50 px-5 py-3 text-base outline-none mb-5 transition-all duration-200 focus:border-primary focus:bg-surface;
   }
-  
-  .font-riveruta-bold {
-    font-family: Riveruta, sans-serif;
-    font-weight: 700;
+
+  .btn-primary {
+    @apply w-full py-3 rounded-xl bg-primary text-white font-semibold transition-all duration-300 hover:bg-primary-dark;
   }
+
+  .icon-btn {
+    @apply text-xl text-slate-300 cursor-pointer hover:text-primary;
+  }
+
+  .input-label {
+    @apply text-xs font-semibold tracking-wider text-gray-500;
+  }
+}
+
+.ProseMirror {
+  min-height: 220px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #374151;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror p {
+  margin: 0;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+.ProseMirror li {
+  margin: 0.3rem 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #f5ba13;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #555;
+}
+
+.ProseMirror code {
+  background: #f3f4f6;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.ProseMirror pre {
+  background: #1f2937;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
 }
