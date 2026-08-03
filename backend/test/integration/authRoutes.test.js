@@ -1,6 +1,6 @@
 const request = require("supertest");
 const { expect } = require("chai");
-const app = require("../index");
+const app = require("../../index");
 
 describe("Authentication Routes", () => {
   it("should return 400 if fullName is missing", async () => {
