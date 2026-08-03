@@ -172,7 +172,17 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
     if (title) note.title = title;
     if (content) note.content = content;
     if (tags) note.tags = tags;
-    if (isPinned) note.isPinned = isPinned;
+
+    if (isPinned !== undefined) {
+      if (typeof isPinned !== "boolean") {
+        return res.status(400).json({
+          error: true,
+          message: "isPinned must be a boolean",
+        });
+      }
+
+      note.isPinned = isPinned;
+    }
 
     await note.save();
 
@@ -238,6 +248,13 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
   const { isPinned } = req.body;
   const { user } = req.user;
 
+  if (typeof isPinned !== "boolean") {
+    return res.status(400).json({
+      error: true,
+      message: "isPinned must be a boolean",
+    });
+  }
+
   try {
     const note = await Note.findOne({ _id: noteId, userId: user._id });
 
@@ -262,7 +279,7 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
   }
 });
 
-// Get User
+
 app.get("/get-user", authenticateToken, async (req, res) => {
   const { user } = req.user;
 
