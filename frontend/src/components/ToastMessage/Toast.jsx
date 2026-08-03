@@ -3,7 +3,6 @@ import { LuCheck } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
 
 const Toast = ({ isShown, message, type, onClose }) => {
-  console.log(type);
   useEffect(() => {
     if (!isShown) return;
 
