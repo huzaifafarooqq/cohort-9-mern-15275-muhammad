@@ -12,8 +12,12 @@
     "start": "nodemon index.js"
 =======
     "start": "nodemon index.js",
+<<<<<<< HEAD
     "test": "mocha \"test/**/*.test.js\""
 >>>>>>> 9171938 (test: add middleware unit tests)
+=======
+    "test": "cross-env NODE_ENV=test mocha \"test/**/*.test.js\""
+>>>>>>> f0b3c07 (refactor: extract authentication layers)
   },
   "dependencies": {
     "cors": "^2.8.6",
