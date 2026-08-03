@@ -6,6 +6,7 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const config = require("./config.json");
 mongoose.connect(process.env.MONGO_URI);
 
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
