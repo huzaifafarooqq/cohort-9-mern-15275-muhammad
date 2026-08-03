@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const logger = require("./logger");
+const requestLogger = require("./middleware/requestLogger");
 const errorHandler = require("./middleware/errorHandler");
 
 const dns = require("dns");
@@ -30,6 +31,8 @@ const { authenticateToken } = require("./utilities");
 const NOTE_COLORS = ["success", "info", "purple", "peach", "pink", "primary"];
 
 app.use(express.json());
+
+app.use(requestLogger);
 
 app.use(
   cors({
