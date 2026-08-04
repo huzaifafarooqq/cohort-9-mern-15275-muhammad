@@ -8,10 +8,7 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 
 const User = require("./models/user.model");
-<<<<<<< HEAD
 const Note = require("./models/note.model");
-=======
->>>>>>> 5fe208f (feat: implement user authentication APIs)
 
 const express = require("express");
 const cors = require("cors");
@@ -19,8 +16,6 @@ const app = express();
 
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utilities");
-
-const NOTE_COLORS = ["success", "info", "purple", "peach", "pink", "primary"];
 
 app.use(express.json());
 
@@ -118,7 +113,6 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-<<<<<<< HEAD
 
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
@@ -135,17 +129,10 @@ app.post("/add-note", authenticateToken, async (req, res) => {
   }
 
   try {
-    const noteCount = await Note.countDocuments({
-      userId: user._id,
-    });
-
-    const noteColor = NOTE_COLORS[noteCount % NOTE_COLORS.length];
-
     const note = new Note({
       title,
       content,
       tags: tags || [],
-      noteColor,
       userId: user._id,
     });
 
@@ -312,8 +299,6 @@ app.get("/get-user", authenticateToken, async (req, res) => {
     message: "",
   });
 });
-=======
->>>>>>> 5fe208f (feat: implement user authentication APIs)
 
 app.listen(8000);
 
