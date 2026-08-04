@@ -12,11 +12,17 @@ const Toast = ({ isShown, message, type, onClose }) => {
 
     return () => clearTimeout(timeoutId);
   }, [isShown, onClose]);
+
+  if (!isShown) {
+    return null;
+  }
+
   return (
     <div
-      className={`fixed top-20 right-6 transition-all duration-300 ${
-        isShown ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      className="fixed top-20 right-6 transition-all duration-300"
     >
       <div
         className={`min-w-52 bg-white border shadow-2xl rounded-md after:w-[5px] after:h-full ${

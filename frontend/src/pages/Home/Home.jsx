@@ -59,15 +59,21 @@ const Home = () => {
     }
   };
 
-  const getAllNotes = async () => {
+  const getUserInfo = async () => {
     try {
-      const response = await axiosInstance.get("/get-all-notes");
+      const response = await axiosInstance.get("/get-user");
 
-      if (response.data && response.data.notes) {
-        setAllNotes(response.data.notes);
+      if (response.data?.user) {
+        setUserInfo(response.data.user);
       }
     } catch (error) {
-      console.error("An unexpected error occurred:", error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      showToastMessage("Failed to load user information", "delete");
     }
   };
 

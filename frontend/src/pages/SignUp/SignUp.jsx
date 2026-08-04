@@ -35,25 +35,24 @@ const SignUp = () => {
     try {
       const response = await axiosInstance.post("/create-account", {
         fullName: name,
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
-      if (response.data && response.data.error) {
+      if (response.data?.error) {
         setError(response.data.message);
         return;
       }
 
-      if(response.data && response.data.accessToken){
+      if (response.data?.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate('/dashboard');
+        navigate("/dashboard");
+        return;
       }
+
+      setError("Account creation was unsuccessful. Please try again.");
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");

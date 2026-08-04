@@ -4,13 +4,35 @@ import StarterKit from "@tiptap/starter-kit";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
-const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }) => {
+const AddEditNotes = ({
+  noteData,
+  type,
+  getAllNotes,
+  onClose,
+  showToastMessage,
+}) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
 
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleRequestError = (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
+    }
+
+    setError(
+      error.response?.data?.message ||
+        "Unable to save the note. Please try again.",
+    );
+  };
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -35,13 +57,7 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
         onClose();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(error.response.data.message);
-      }
+      handleRequestError(error);
     }
   };
 
@@ -60,13 +76,7 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
         onClose();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(error.response.data.message);
-      }
+      handleRequestError(error);
     }
   };
 

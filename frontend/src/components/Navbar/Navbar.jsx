@@ -9,7 +9,7 @@ const Navbar = ({ userInfo }) => {
   const navigate = useNavigate();
 
   const onLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
     navigate("/login");
   };
 

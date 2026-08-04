@@ -4,15 +4,15 @@ export const validateEmail = (email) => {
 };
 
 
-export const getInitials = (name) => {
-  if (!name) return "";
+export const getInitials = (name = "") => {
+  const words = name.trim().split(/\s+/).filter(Boolean);
 
-  const words = name.split(" ");
-  let initials = "";
-
-  for (let i = 0; i < Math.min(words.length, 2); i++) {
-    initials += words[i][0];
+  if (words.length === 0) {
+    return "";
   }
 
-  return initials.toUpperCase();
+  return words
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join("");
 };
