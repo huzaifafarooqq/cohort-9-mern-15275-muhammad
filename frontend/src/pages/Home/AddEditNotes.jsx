@@ -5,7 +5,13 @@ import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
 
-const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }) => {
+const AddEditNotes = ({
+  noteData,
+  type,
+  getAllNotes,
+  onClose,
+  showToastMessage,
+}) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
@@ -99,8 +105,12 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
       </button>
 
       <div className="flex flex-col gap-2">
-        <label className="input-label">TITLE</label>
+        <label htmlFor="note-title" className="input-label">
+          TITLE
+        </label>
+
         <input
+          id="note-title"
           type="text"
           className="text-4xl font-semibold text-gray-800 outline-none placeholder:text-gray-400"
           placeholder="Enter note title"
@@ -109,8 +119,14 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
         />
       </div>
 
-      <div className="flex flex-col gap-2 mt-4">
-        <label className="input-label">CONTENT</label>
+      <div
+        className="flex flex-col gap-2 mt-4"
+        role="group"
+        aria-labelledby="note-content-label"
+      >
+        <p id="note-content-label" className="input-label">
+          CONTENT
+        </p>
 
         <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white focus-within:border-primary transition-all">
           <div className="flex flex-wrap items-center gap-2 p-3 border-b border-gray-200 bg-gray-50">
@@ -170,8 +186,11 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
         </div>
       </div>
 
-      <div className="mt-3">
-        <label className="input-label">TAGS</label>
+      <div className="mt-3" role="group" aria-labelledby="note-tags-label">
+        <p id="note-tags-label" className="input-label">
+          TAGS
+        </p>
+
         <TagInput tags={tags} setTags={setTags} />
       </div>
 

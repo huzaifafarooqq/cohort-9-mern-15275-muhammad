@@ -1,6 +1,19 @@
 export const validateEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
+  if (typeof email !== "string") return false;
+
+  const value = email.trim();
+
+  if (!value || /\s/.test(value)) return false;
+
+  const atIndex = value.indexOf("@");
+
+  if (atIndex <= 0 || atIndex !== value.lastIndexOf("@")) {
+    return false;
+  }
+
+  const dotIndex = value.indexOf(".", atIndex + 2);
+
+  return dotIndex !== -1 && dotIndex < value.length - 1;
 };
 
 

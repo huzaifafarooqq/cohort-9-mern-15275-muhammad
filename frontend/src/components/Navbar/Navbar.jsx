@@ -35,11 +35,10 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   };
   return (
     <div className="bg-surface flex items-center justify-between px-8 py-5 border-b border-gray-200 shadow-sm">
-      <h2
-        className="text-3xl font-bold text-secondary tracking-tight cursor-pointer"
-        onClick={() => navigate("/dashboard")}
-      >
-        Notes
+      <h2 className="text-3xl font-bold text-secondary tracking-tight">
+        <button type="button" onClick={() => navigate("/dashboard")}>
+          Notes
+        </button>
       </h2>
       {onSearchNote && handleClearSearch && (
         <SearchBar
