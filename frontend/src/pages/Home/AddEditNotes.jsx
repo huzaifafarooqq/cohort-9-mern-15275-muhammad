@@ -119,14 +119,8 @@ const AddEditNotes = ({
         />
       </div>
 
-      <div
-        className="flex flex-col gap-2 mt-4"
-        role="group"
-        aria-labelledby="note-content-label"
-      >
-        <p id="note-content-label" className="input-label">
-          CONTENT
-        </p>
+      <fieldset className="flex flex-col gap-2 mt-4">
+        <legend className="input-label">CONTENT</legend>
 
         <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white focus-within:border-primary transition-all">
           <div className="flex flex-wrap items-center gap-2 p-3 border-b border-gray-200 bg-gray-50">
@@ -184,15 +178,13 @@ const AddEditNotes = ({
             className="min-h-[220px] p-5 text-[15px] text-gray-700 focus:outline-none"
           />
         </div>
-      </div>
+      </fieldset>
 
-      <div className="mt-3" role="group" aria-labelledby="note-tags-label">
-        <p id="note-tags-label" className="input-label">
-          TAGS
-        </p>
+      <fieldset className="mt-3">
+        <legend className="input-label">TAGS</legend>
 
         <TagInput tags={tags} setTags={setTags} />
-      </div>
+      </fieldset>
 
       {error && (
         <p className="text-red-400 font-medium text-xs pt-4">{error}</p>
