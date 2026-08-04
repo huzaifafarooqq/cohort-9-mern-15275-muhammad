@@ -176,7 +176,7 @@ describe("Note Service", () => {
   });
 
   describe("searchNotes", () => {
-    it("should search a user's notes by title or content", async () => {
+    it("should search a user's notes by title, content, or tags", async () => {
       const notes = [{ title: "University Notes" }];
       const findStub = sinon.stub(Note, "find").resolves(notes);
 
@@ -190,10 +190,15 @@ describe("Note Service", () => {
       const query = findStub.firstCall.args[0];
 
       expect(query.userId).to.equal("user-1");
-      expect(query.$or).to.have.length(2);
-      expect(query.$or[0].title.$regex).to.be.instanceOf(RegExp);
-      expect(query.$or[1].content.$regex).to.be.instanceOf(RegExp);
-      expect(query.$or[0].title.$regex.test("University")).to.equal(true);
+      expect(query.$or).to.have.length(3);
+
+      expect(query.$or[0].title).to.be.instanceOf(RegExp);
+      expect(query.$or[1].content).to.be.instanceOf(RegExp);
+      expect(query.$or[2].tags).to.be.instanceOf(RegExp);
+
+      expect(query.$or[0].title.test("University")).to.equal(true);
+      expect(query.$or[2].tags.test("university")).to.equal(true);
+
       expect(result).to.equal(notes);
     });
   });

@@ -19,6 +19,16 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
     }
   };
 
+  const handleSearchInputChange = ({ target }) => {
+    const value = target.value;
+
+    setSearchQuery(value);
+
+    if (!value.trim()) {
+      handleClearSearch();
+    }
+  };
+
   const onClearSearch = () => {
     setSearchQuery("");
     handleClearSearch();
@@ -31,19 +41,14 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
       >
         Notes
       </h2>
-      <SearchBar
-        value={searchQuery}
-        onChange={({ target }) => {
-          setSearchQuery(target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearch();
-          }
-        }}
-        handleSearch={handleSearch}
-        onClearSearch={onClearSearch}
-      />
+      {onSearchNote && handleClearSearch && (
+        <SearchBar
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+          handleSearch={handleSearch}
+          onClearSearch={onClearSearch}
+        />
+      )}
       {userInfo && <ProfileInfo userInfo={userInfo} onLogout={onLogout} />}
     </div>
   );
