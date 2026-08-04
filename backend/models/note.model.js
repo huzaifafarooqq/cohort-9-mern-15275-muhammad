@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const NOTE_COLORS = ["success", "info", "purple", "peach", "pink", "primary"];
+
 const noteSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -15,6 +17,5 @@ const noteSchema = new Schema({
   },
   createdOn: { type: Date, default: Date.now },
 });
-const NOTE_COLORS = ["success", "info", "purple", "peach", "pink", "primary"];
 
 module.exports = mongoose.model("Note", noteSchema);
