@@ -7,7 +7,7 @@ A notes application built with the MERN stack that allows authenticated users to
 
 ## Dashboard
 
-![MERN Notes App Dashboard](docs/dashboard.png)
+![MERN Notes App Dashboard](frontend/public/screenshots/dashboard.png)
 
 ## Features
 
@@ -109,14 +109,18 @@ Make sure Node.js version 18 or higher, npm, and Git are installed. A MongoDB At
 cd frontend
 npm install
 npm run dev
+```
 
-The frontend will run at http://localhost:5173.
+The frontend will run at `http://localhost:5173`.
 
-## Run the Frontend
+### Run the Backend
+
+Open another terminal:
 
 ```bash
 cd backend
 npm install
 npm start
+```
 
-The backend will run at http://localhost:8000.
+The backend will run at `http://localhost:8000`.
