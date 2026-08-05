@@ -139,6 +139,13 @@ const updateNotePinned = async (req, res, next) => {
     const { isPinned } = req.body;
     const { user } = req.user;
 
+    if (typeof isPinned !== "boolean") {
+      return res.status(400).json({
+        error: true,
+        message: "isPinned must be a boolean",
+      });
+    }
+
     const note = await updatePinnedStatus({
       noteId,
       userId: user._id,

@@ -13,17 +13,6 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 
-if (process.env.NODE_ENV !== "test") {
-  mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-      logger.info("Connected to MongoDB");
-    })
-    .catch((error) => {
-      logger.error(error, "MongoDB connection failed");
-    });
-}
-
 const app = express();
 
 app.use(express.json());
@@ -51,10 +40,22 @@ app.use(errorHandler);
 
 const PORT = 8000;
 
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    logger.info("Connected to MongoDB");
+
+    app.listen(PORT, () => {
+      logger.info(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    logger.error(error, "Application startup failed");
+    process.exit(1);
+  }
+};
+
 if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    logger.info(`Server running on port ${PORT}`);
-  });
+  startServer();
 }
 
 module.exports = app;
