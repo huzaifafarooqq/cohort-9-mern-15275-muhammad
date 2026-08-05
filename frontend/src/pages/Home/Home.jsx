@@ -76,15 +76,12 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-<<<<<<< HEAD
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
         return;
       }
 
-=======
->>>>>>> 5480397 (Add global exception handling middleware)
       showToastMessage("Failed to load notes", "delete");
     }
   };
