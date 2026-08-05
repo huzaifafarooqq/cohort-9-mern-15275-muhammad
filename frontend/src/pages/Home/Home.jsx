@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import NoteCard from "../../components/Cards/NoteCard";
 import { MdAdd } from "react-icons/md";
 import AddEditNotes from "./AddEditNotes";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import axiosInstance from "../../utils/axiosInstance";
+import Toast from "../../components/ToastMessage/Toast";
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -11,6 +14,78 @@ const Home = () => {
     type: "add",
     data: null,
   });
+
+  const [showToastMsg, setShowToastMsg] = useState({
+    isShown: false,
+    message: "",
+    type: "add",
+  });
+
+  const [allNotes, setAllNotes] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleEdit = (noteDetails) => {
+    setOpenAddEditModal({ isShown: true, data: noteDetails, type: "edit" });
+  };
+
+  const showToastMessage = (message, type) => {
+    setShowToastMsg({
+      isShown: true,
+      message,
+      type,
+    });
+  };
+
+  const handleCloseToast = () => {
+    setShowToastMsg({
+      isShown: false,
+      message: "",
+    });
+  };
+
+  const getUserInfo = async () => {
+    try {
+      const response = await axiosInstance.get("/get-user");
+
+      if (response.data?.user) {
+        setUserInfo(response.data.user);
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      showToastMessage("Failed to load user information", "delete");
+    }
+  };
+
+  const getAllNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-notes");
+
+      if (response.data?.notes) {
+        setAllNotes(response.data.notes);
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      showToastMessage("Failed to load notes", "delete");
+    }
+  };
+
+  useEffect(() => {
+    getAllNotes();
+    getUserInfo();
+    return () => {};
+  }, []);
 
   const handleCloseModal = () => {
     setOpenAddEditModal({
@@ -22,76 +97,24 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar userInfo={userInfo} />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-primary"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-success"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-info"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-purple"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-peach"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-            <NoteCard
-              title="University Starting on 31st August"
-              date="30th July 2026"
-              content="University Starting on 31st August. Plan Accordingly!"
-              tags="#University"
-              isPinned={true}
-              bgClass="border-l-pink"
-              onEdit={() => {}}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
+            {allNotes.map((item, index) => (
+              <NoteCard
+                key={item._id}
+                title={item.title}
+                date={item.createdOn}
+                content={item.content}
+                tags={item.tags}
+                isPinned={item.isPinned}
+                noteColor={item.noteColor}
+                onEdit={() => handleEdit(item)}
+                onDelete={() => {}}
+                onPinNote={() => {}}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -121,9 +144,20 @@ const Home = () => {
         <AddEditNotes
           type={openAddEditModal.type}
           noteData={openAddEditModal.data}
-          onClose={handleCloseModal}
+          onClose={() => {
+            setOpenAddEditModal({ isShown: false, type: "add", data: null });
+          }}
+          getAllNotes={getAllNotes}
+          showToastMessage={showToastMessage}
         />
       </Modal>
+
+      <Toast
+        isShown={showToastMsg.isShown}
+        message={showToastMsg.message}
+        type={showToastMsg.type}
+        onClose={handleCloseToast}
+      />
     </>
   );
 };

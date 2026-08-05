@@ -3,26 +3,82 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
+import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
-const AddEditNotes = ({ noteData, type, onClose }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState([]);
+const AddEditNotes = ({
+  noteData,
+  type,
+  getAllNotes,
+  onClose,
+  showToastMessage,
+}) => {
+  const [title, setTitle] = useState(noteData?.title || "");
+  const [content, setContent] = useState(noteData?.content || "");
+  const [tags, setTags] = useState(noteData?.tags || []);
 
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
+  const handleRequestError = (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
+    }
+
+    setError(
+      error.response?.data?.message ||
+        "Unable to save the note. Please try again.",
+    );
+  };
+
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "",
+    content: noteData?.content || "",
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       setContent(editor.getHTML());
     },
   });
 
-  const addNewNote = async () => {};
+  const addNewNote = async () => {
+    try {
+      const response = await axiosInstance.post("/add-note", {
+        title,
+        content,
+        tags,
+      });
 
-  const editNote = async () => {};
+      if (response.data && response.data.note) {
+        showToastMessage("Note Added Successfully", "add");
+        getAllNotes();
+        onClose();
+      }
+    } catch (error) {
+      handleRequestError(error);
+    }
+  };
+
+  const editNote = async () => {
+    const noteId = noteData._id;
+    try {
+      const response = await axiosInstance.put("/edit-note/" + noteId, {
+        title,
+        content,
+        tags,
+      });
+
+      if (response.data && response.data.note) {
+        showToastMessage("Note Updated Successfully", "add");
+        getAllNotes();
+        onClose();
+      }
+    } catch (error) {
+      handleRequestError(error);
+    }
+  };
 
   const handleAddNote = () => {
     if (!title) {
@@ -137,7 +193,7 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
         className="w-full mt-7 py-4 rounded-2xl bg-primary hover:bg-primary-dark text-white font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
         onClick={handleAddNote}
       >
-        ADD
+        {type === "edit" ? "UPDATE" : "ADD"}
       </button>
     </div>
   );
