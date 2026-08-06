@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <g opacity="0.25">
+    <rect x="30" y="20" width="160" height="210" rx="16" fill="none" stroke="#000" stroke-width="6" transform="rotate(-10 110 125)" />
+    <g transform="rotate(-10 110 125)">
+      <rect x="50" y="45" width="40" height="40" fill="#000" />
+      <rect x="105" y="45" width="70" height="8" rx="4" fill="#000" />
+      <rect x="105" y="60" width="50" height="8" rx="4" fill="#000" />
+      <rect x="50" y="105" width="25" height="25" fill="#000" />
+      <rect x="90" y="113" width="85" height="8" rx="4" fill="#000" />
+      <rect x="50" y="150" width="25" height="25" fill="#000" />
+      <rect x="90" y="158" width="85" height="8" rx="4" fill="#000" />
+    </g>
+  </g>
+
+  <g>
+    <rect x="85" y="40" width="160" height="210" rx="16" fill="#FFF" stroke="#000" stroke-width="6" />
+    <rect x="105" y="65" width="45" height="45" fill="#000" />
+    <rect x="165" y="65" width="65" height="8" rx="4" fill="#000" />
+    <rect x="165" y="80" width="45" height="8" rx="4" fill="#000" />
+    <!-- List Row 1 -->
+    <rect x="105" y="130" width="25" height="25" fill="#CCCCCC" />
+    <rect x="145" y="138" width="85" height="8" rx="4" fill="#CCCCCC" />
+    <!-- List Row 2 -->
+    <rect x="105" y="175" width="25" height="25" fill="#CCCCCC" />
+    <rect x="145" y="183" width="85" height="8" rx="4" fill="#CCCCCC" />
+  </g>
+
+  <g transform="translate(245, 215)">
+    <circle cx="0" cy="0" r="34" fill="#000" />
+    <!-- Plus Sign -->
+    <path d="M -4 -16 H 4 V -4 H 16 V 4 H 4 V 16 H -4 V 4 H -16 V -4 H -4 Z" fill="#FFF" />
+  </g>
+</svg>
