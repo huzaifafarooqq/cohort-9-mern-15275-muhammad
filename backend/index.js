@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const dns = require("dns");
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const mongoose = require("mongoose");
 const express = require("express");
@@ -13,7 +12,28 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 
+const dnsServers = process.env.DNS_SERVERS?.split(",")
+  .map((server) => server.trim())
+  .filter(Boolean);
+
+if (dnsServers?.length) {
+  dns.setServers(dnsServers);
+}
+
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+      logger.info("Connected to MongoDB");
+    })
+    .catch((error) => {
+      logger.error(error, "MongoDB connection failed");
+    });
+}
+
 const app = express();
+
+app.disable("x-powered-by");
 
 app.use(express.json());
 
@@ -21,7 +41,7 @@ app.use(requestLogger);
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
   }),
 );
 
@@ -40,22 +60,10 @@ app.use(errorHandler);
 
 const PORT = 8000;
 
-const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    logger.info("Connected to MongoDB");
-
-    app.listen(PORT, () => {
-      logger.info(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    logger.error(error, "Application startup failed");
-    process.exit(1);
-  }
-};
-
 if (process.env.NODE_ENV !== "test") {
-  startServer();
+  app.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
+  });
 }
 
 module.exports = app;

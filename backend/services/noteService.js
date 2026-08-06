@@ -83,11 +83,15 @@ const updatePinnedStatus = async ({ noteId, userId, isPinned }) => {
 };
 
 const searchNotes = async ({ userId, query }) => {
+  const searchTerm = query.startsWith("#") ? query.slice(1) : query;
+  const searchRegex = new RegExp(searchTerm, "i");
+
   return Note.find({
     userId,
     $or: [
-      { title: { $regex: new RegExp(query, "i") } },
-      { content: { $regex: new RegExp(query, "i") } },
+      { title: searchRegex },
+      { content: searchRegex },
+      { tags: searchRegex },
     ],
   });
 };
