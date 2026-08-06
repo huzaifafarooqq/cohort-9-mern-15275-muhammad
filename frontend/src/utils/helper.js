@@ -1,18 +1,30 @@
 export const validateEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-};
+  if (typeof email !== "string") return false;
 
+  const value = email.trim();
 
-export const getInitials = (name = "") => {
-  const words = name.trim().split(/\s+/).filter(Boolean);
+  if (!value || /\s/.test(value)) return false;
 
-  if (words.length === 0) {
-    return "";
+  const atIndex = value.indexOf("@");
+
+  if (atIndex <= 0 || atIndex !== value.lastIndexOf("@")) {
+    return false;
   }
 
-  return words
-    .slice(0, 2)
-    .map((word) => word[0].toUpperCase())
-    .join("");
+  const dotIndex = value.indexOf(".", atIndex + 2);
+
+  return dotIndex !== -1 && dotIndex < value.length - 1;
+};
+
+export const getInitials = (name) => {
+  if (!name) return "";
+
+  const words = name.trim().split(/\s+/);
+  let initials = "";
+
+  for (let i = 0; i < Math.min(words.length, 2); i++) {
+    initials += words[i][0];
+  }
+
+  return initials.toUpperCase();
 };

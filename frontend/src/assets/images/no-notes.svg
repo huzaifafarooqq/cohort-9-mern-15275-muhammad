@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 580 480" width="100%" height="100%">
+  <defs>
+    <g id="clipboard">
+      <!-- Clipboard Body -->
+      <rect x="0" y="0" width="200" height="260" rx="10" ry="10" fill="#ffffff" stroke="#bdbdbd" stroke-width="3"></rect>
+
+      <!-- Paper -->
+      <rect x="15" y="25" width="170" height="220" rx="4" ry="4" fill="#efefef"></rect>
+
+      <!-- Ring -->
+      <circle cx="100" cy="-12" r="8" fill="none" stroke="#000" stroke-width="4"></circle>
+
+      <!-- Clip -->
+      <path d="M50 -15 L150 -15 L140 15 L60 15 Z" fill="#000"></path>
+    </g>
+  </defs>
+
+  <!-- Back Clipboard -->
+  <g transform="translate(170 150) rotate(-18)">
+    <use href="#clipboard" x="-100" y="-130"></use>
+  </g>
+
+  <!-- Front Clipboard -->
+  <g transform="translate(290 210)">
+    <use href="#clipboard" x="-100" y="-130"></use>
+  </g>
+</svg>

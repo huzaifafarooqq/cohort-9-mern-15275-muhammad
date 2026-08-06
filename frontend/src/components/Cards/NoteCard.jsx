@@ -33,7 +33,7 @@ const noteColorStyles = {
     border: "border-l-pink",
     pin: "text-pink",
     pinHover: "hover:text-pink",
-    badge: "bg-pink-100 text-pink",
+    badge: "bg-[#FFE4EE] text-pink",
   },
   primary: {
     border: "border-l-primary",
