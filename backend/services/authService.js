@@ -19,7 +19,11 @@ const registerUser = async ({ fullName, email, password }) => {
   await user.save();
 
   const accessToken = jwt.sign(
-    { user },
+    {
+      user: {
+        _id: user._id,
+      },
+    },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "36000m",
@@ -49,7 +53,11 @@ const loginUser = async ({ email, password }) => {
   }
 
   const accessToken = jwt.sign(
-    { user },
+    {
+      user: {
+        _id: user._id,
+      },
+    },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "36000m",

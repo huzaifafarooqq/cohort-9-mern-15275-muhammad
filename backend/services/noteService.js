@@ -20,7 +20,14 @@ const createNote = async ({ title, content, tags, userId }) => {
   return note;
 };
 
-const updateNote = async ({ noteId, userId, title, content, tags, isPinned }) => {
+const updateNote = async ({
+  noteId,
+  userId,
+  title,
+  content,
+  tags,
+  isPinned,
+}) => {
   const note = await Note.findOne({
     _id: noteId,
     userId,
@@ -84,7 +91,12 @@ const updatePinnedStatus = async ({ noteId, userId, isPinned }) => {
 
 const searchNotes = async ({ userId, query }) => {
   const searchTerm = query.startsWith("#") ? query.slice(1) : query;
-  const searchRegex = new RegExp(searchTerm, "i");
+  if (searchTerm.length > 100) {
+    throw new Error("Search query is too long");
+  }
+
+  const escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const searchRegex = new RegExp(escapedSearchTerm, "i");
 
   return Note.find({
     userId,
