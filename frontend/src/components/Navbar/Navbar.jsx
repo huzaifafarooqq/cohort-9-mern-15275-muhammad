@@ -14,14 +14,17 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   };
 
   const handleSearch = () => {
-    if (searchQuery) {
+    if (searchQuery && typeof onSearchNote === "function") {
       onSearchNote(searchQuery);
     }
   };
 
   const onClearSearch = () => {
     setSearchQuery("");
-    handleClearSearch();
+
+    if (typeof handleClearSearch === "function") {
+      handleClearSearch();
+    }
   };
   return (
     <div className="bg-surface flex items-center justify-between px-8 py-5 border-b border-gray-200 shadow-sm">
