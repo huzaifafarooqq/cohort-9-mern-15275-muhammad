@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ProfileInfo from "../Cards/ProfileInfo";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,11 +36,12 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   };
   return (
     <div className="bg-surface flex items-center justify-between px-8 py-5 border-b border-gray-200 shadow-sm">
-      <h2 className="text-3xl font-bold text-secondary tracking-tight">
-        <button type="button" onClick={() => navigate("/dashboard")}>
-          Notes
-        </button>
-      </h2>
+      <Link
+        to="/dashboard"
+        className="text-3xl font-bold text-secondary tracking-tight"
+      >
+        Notes
+      </Link>
       {onSearchNote && handleClearSearch && (
         <SearchBar
           value={searchQuery}

@@ -41,12 +41,10 @@ const AddEditNotes = ({
         onClose();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response?.data?.message) {
         setError(error.response.data.message);
+      } else {
+        setError("Unable to add the note. Please try again.");
       }
     }
   };
@@ -66,12 +64,10 @@ const AddEditNotes = ({
         onClose();
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response?.data?.message) {
         setError(error.response.data.message);
+      } else {
+        setError("Unable to update the note. Please try again.");
       }
     }
   };

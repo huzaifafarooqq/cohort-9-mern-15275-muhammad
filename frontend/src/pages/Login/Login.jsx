@@ -34,7 +34,9 @@ const Login = () => {
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
         navigate("/dashboard");
+        return;
       }
+      setError("Login was unsuccessful. Please try again.");
     } catch (error) {
       if (
         error.response && error.response.data && error.response.data.message) {

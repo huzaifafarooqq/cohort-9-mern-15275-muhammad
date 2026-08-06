@@ -16,11 +16,10 @@ export const validateEmail = (email) => {
   return dotIndex !== -1 && dotIndex < value.length - 1;
 };
 
-
 export const getInitials = (name) => {
   if (!name) return "";
 
-  const words = name.split(" ");
+  const words = name.trim().split(/\s+/);
   let initials = "";
 
   for (let i = 0; i < Math.min(words.length, 2); i++) {
