@@ -34,7 +34,7 @@ const addNote = async (req, res, next) => {
       userId: user._id,
     });
 
-    logger.info(`Note created by user ${user._id}`);
+    logger.info("Note created successfully");
 
     return res.json({
       error: false,
@@ -77,7 +77,7 @@ const editNote = async (req, res, next) => {
       });
     }
 
-    logger.info(`Note updated: ${noteId}`);
+    logger.info("Note updated successfully");
 
     return res.json({
       error: false,
@@ -122,7 +122,7 @@ const removeNote = async (req, res, next) => {
       });
     }
 
-    logger.info(`Note deleted: ${noteId}`);
+    logger.info("Note deleted successfully");
 
     return res.json({
       error: false,
@@ -139,6 +139,13 @@ const updateNotePinned = async (req, res, next) => {
     const { isPinned } = req.body;
     const { user } = req.user;
 
+    if (typeof isPinned !== "boolean") {
+      return res.status(400).json({
+        error: true,
+        message: "isPinned must be a boolean",
+      });
+    }
+
     const note = await updatePinnedStatus({
       noteId,
       userId: user._id,
@@ -152,7 +159,7 @@ const updateNotePinned = async (req, res, next) => {
       });
     }
 
-    logger.info(`Note ${noteId} ${isPinned ? "pinned" : "unpinned"}`);
+    logger.info("Note pin status updated successfully");
 
     return res.json({
       error: false,
@@ -181,7 +188,7 @@ const searchUserNotes = async (req, res, next) => {
       query,
     });
 
-    logger.info(`Search performed: "${query}"`);
+    logger.info("Notes search completed successfully");
 
     return res.json({
       error: false,

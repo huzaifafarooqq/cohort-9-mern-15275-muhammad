@@ -43,7 +43,7 @@ const createAccount = async (req, res, next) => {
       });
     }
 
-    logger.info(`New user registered: ${email}`);
+    logger.info("New user registered successfully");
 
     return res.json({
       error: false,
@@ -77,20 +77,14 @@ const login = async (req, res, next) => {
       password,
     });
 
-    if (result.status === "not-found") {
-      return res.status(400).json({
-        message: "User not found",
-      });
-    }
-
-    if (result.status === "invalid") {
+    if (result.status === "not-found" || result.status === "invalid") {
       return res.status(400).json({
         error: true,
-        message: "Invalid Credentials",
+        message: "Invalid email or password",
       });
     }
 
-    logger.info(`User logged in: ${email}`);
+    logger.info("User logged in successfully");
 
     return res.json({
       error: false,

@@ -28,6 +28,7 @@ if (process.env.NODE_ENV !== "test") {
     })
     .catch((error) => {
       logger.error(error, "MongoDB connection failed");
+      process.exit(1);
     });
 }
 
