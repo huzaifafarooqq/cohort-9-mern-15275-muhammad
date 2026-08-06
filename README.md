@@ -101,7 +101,7 @@ The repository is divided into two main folders:
 
 ### Prerequisites
 
-Make sure Node.js version 18 or higher, npm, and Git are installed. A MongoDB Atlas connection is also required.
+Make sure Node.js version 20.19.0 or higher, npm, and Git are installed. A MongoDB Atlas connection is also required.
 
 ### Run the Frontend
 
