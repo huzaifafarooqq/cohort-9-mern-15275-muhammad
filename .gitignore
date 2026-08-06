@@ -1,0 +1,7 @@
+
+backend/coverage/
+backend/.nyc_output/
+frontend/coverage/
+frontend/.nyc_output/
+frontend/dist/
+.scannerwork/
