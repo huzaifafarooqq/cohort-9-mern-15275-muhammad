@@ -9,44 +9,45 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const navigate = useNavigate();
 
   const onLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/login");
   };
 
   const handleSearch = () => {
-    if (searchQuery && typeof onSearchNote === "function") {
+    if (searchQuery) {
       onSearchNote(searchQuery);
+    }
+  };
+
+  const handleSearchInputChange = ({ target }) => {
+    const value = target.value;
+
+    setSearchQuery(value);
+
+    if (!value.trim()) {
+      handleClearSearch();
     }
   };
 
   const onClearSearch = () => {
     setSearchQuery("");
-
-    if (typeof handleClearSearch === "function") {
-      handleClearSearch();
-    }
+    handleClearSearch();
   };
   return (
     <div className="bg-surface flex items-center justify-between px-8 py-5 border-b border-gray-200 shadow-sm">
-      <h2
-        className="text-3xl font-bold text-secondary tracking-tight cursor-pointer"
-        onClick={() => navigate("/dashboard")}
-      >
-        Notes
+      <h2 className="text-3xl font-bold text-secondary tracking-tight">
+        <button type="button" onClick={() => navigate("/dashboard")}>
+          Notes
+        </button>
       </h2>
-      <SearchBar
-        value={searchQuery}
-        onChange={({ target }) => {
-          setSearchQuery(target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearch();
-          }
-        }}
-        handleSearch={handleSearch}
-        onClearSearch={onClearSearch}
-      />
+      {onSearchNote && handleClearSearch && (
+        <SearchBar
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+          handleSearch={handleSearch}
+          onClearSearch={onClearSearch}
+        />
+      )}
       {userInfo && <ProfileInfo userInfo={userInfo} onLogout={onLogout} />}
     </div>
   );

@@ -53,18 +53,14 @@ const Home = () => {
   const getUserInfo = async () => {
     try {
       const response = await axiosInstance.get("/get-user");
-
-      if (response.data?.user) {
+      if (response.data && response.data.user) {
         setUserInfo(response.data.user);
       }
     } catch (error) {
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
+      if (error.response.status === 401) {
+        localStorage.clear();
         navigate("/login");
-        return;
       }
-
-      showToastMessage("Failed to load user information", "delete");
     }
   };
 
@@ -72,16 +68,10 @@ const Home = () => {
     try {
       const response = await axiosInstance.get("/get-all-notes");
 
-      if (response.data?.notes) {
+      if (response.data && response.data.notes) {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-        navigate("/login");
-        return;
-      }
-
       showToastMessage("Failed to load notes", "delete");
     }
   };
