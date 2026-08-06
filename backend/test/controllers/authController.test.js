@@ -173,7 +173,8 @@ describe("Auth Controller", () => {
       expect(res.status.calledOnceWith(400)).to.equal(true);
       expect(
         res.json.calledOnceWith({
-          message: "User not found",
+          error: true,
+          message: "Invalid email or password",
         }),
       ).to.equal(true);
     });
@@ -199,7 +200,7 @@ describe("Auth Controller", () => {
       expect(
         res.json.calledOnceWith({
           error: true,
-          message: "Invalid Credentials",
+          message: "Invalid email or password",
         }),
       ).to.equal(true);
     });
