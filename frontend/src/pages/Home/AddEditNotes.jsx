@@ -4,7 +4,6 @@ import StarterKit from "@tiptap/starter-kit";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
-import { useNavigate } from "react-router-dom";
 
 const AddEditNotes = ({
   noteData,
@@ -18,21 +17,6 @@ const AddEditNotes = ({
   const [tags, setTags] = useState(noteData?.tags || []);
 
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
-
-  const handleRequestError = (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      navigate("/login");
-      return;
-    }
-
-    setError(
-      error.response?.data?.message ||
-        "Unable to save the note. Please try again.",
-    );
-  };
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -57,7 +41,11 @@ const AddEditNotes = ({
         onClose();
       }
     } catch (error) {
-      handleRequestError(error);
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Unable to add the note. Please try again.");
+      }
     }
   };
 
@@ -76,7 +64,11 @@ const AddEditNotes = ({
         onClose();
       }
     } catch (error) {
-      handleRequestError(error);
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Unable to update the note. Please try again.");
+      }
     }
   };
 
@@ -109,8 +101,12 @@ const AddEditNotes = ({
       </button>
 
       <div className="flex flex-col gap-2">
-        <label className="input-label">TITLE</label>
+        <label htmlFor="note-title" className="input-label">
+          TITLE
+        </label>
+
         <input
+          id="note-title"
           type="text"
           className="text-4xl font-semibold text-gray-800 outline-none placeholder:text-gray-400"
           placeholder="Enter note title"
@@ -119,8 +115,8 @@ const AddEditNotes = ({
         />
       </div>
 
-      <div className="flex flex-col gap-2 mt-4">
-        <label className="input-label">CONTENT</label>
+      <fieldset className="flex flex-col gap-2 mt-4">
+        <legend className="input-label">CONTENT</legend>
 
         <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white focus-within:border-primary transition-all">
           <div className="flex flex-wrap items-center gap-2 p-3 border-b border-gray-200 bg-gray-50">
@@ -178,12 +174,13 @@ const AddEditNotes = ({
             className="min-h-[220px] p-5 text-[15px] text-gray-700 focus:outline-none"
           />
         </div>
-      </div>
+      </fieldset>
 
-      <div className="mt-3">
-        <label className="input-label">TAGS</label>
+      <fieldset className="mt-3">
+        <legend className="input-label">TAGS</legend>
+
         <TagInput tags={tags} setTags={setTags} />
-      </div>
+      </fieldset>
 
       {error && (
         <p className="text-red-400 font-medium text-xs pt-4">{error}</p>
